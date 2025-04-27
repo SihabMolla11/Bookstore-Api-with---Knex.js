@@ -1,6 +1,5 @@
 import bcryptjs from 'bcryptjs';
-import db from '../config/db';
-import { createAuthor } from '../models/author.model';
+import { AuthorType, createAuthor } from '../models/author.model';
 
 // export const singUpAdminUser = async (userData: any) => {
 
@@ -31,23 +30,15 @@ import { createAuthor } from '../models/author.model';
 //   };
 // };
 
-interface Author {
-  name: string;
-  email: string;
-  password: string;
-  bio?: string;
-  birthdate: string;
-}
 
-export const registrationService = async (payload: Author) => {
+export const registrationService = async (payload: AuthorType) => {
   const hashedPassword = await bcryptjs.hash(payload?.password, 10);
   payload.password = hashedPassword;
-
-  console.log('bnagla pyaload', payload);
-
   const newAuthor = await createAuthor(payload);
-
-  console.log('bnalg anew data', newAuthor);
-
   return newAuthor;
 };
+
+
+export const findIsExistingEmail = async (email:string)=>{
+  
+}

@@ -1,22 +1,41 @@
+import bcryptjs from 'bcryptjs';
 import { Request, Response } from 'express';
-import errorMessage from '../utils/error-message';
+import { AuthorType, createAuthor, getAuthorByEmail } from '../models/author.model';
+import errorResponse from '../utils/error-message';
+import { signToken } from '../utils/jwt.util';
 import authorValidationType from '../validator/author.validator';
-import { registrationService } from '../services/auth.service';
 
 export const registrationController = async (req: Request, res: Response): Promise<void> => {
   try {
-    const { body } = req;
+    const { body: payload } = req;
 
-    const validation = authorValidationType.validate(body);
+    const validation = authorValidationType.validate(payload);
 
     if (validation?.error) {
-      errorMessage(res, validation.error.details[0].message, 500);
+      errorResponse(res, validation.error.details[0].message, 500);
     }
 
-    const response = await registrationService(validation?.value)
+    const isAlreadyExisting = await getAuthorByEmail(payload.email);
 
+    if (isAlreadyExisting) {
+      errorResponse(res, 'Email Already Existing', 500);
+    }
 
-    res.status(201).json(validation);
+    const hashedPassword = await bcryptjs.hash(payload?.password, 10);
+    payload.password = hashedPassword;
+
+    const newAuthor: AuthorType = await createAuthor(payload);
+
+    const token: string = signToken(newAuthor.id, newAuthor.email, newAuthor.name);
+
+    const data = {
+      name: newAuthor.name,
+      email: newAuthor?.email,
+      birthdate: newAuthor?.birthdate,
+      token,
+    };
+
+    res.status(201).json(data);
   } catch (error: any) {
     res.status(500).json({ error: error.message || 'Internal Server Error' });
   }

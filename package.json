@@ -1,14 +1,19 @@
 {
   "scripts": {
     "dev": "nodemon src/app.ts",
-    "migrate": "knex migrate:latest --knexfile ./src/knexfile.ts",
+    "migrate:make": "knex migrate:make --knexfile knexfile.ts -x ts",
+    "migrate:latest": "knex migrate:latest --knexfile knexfile.ts",
+    "migrate:rollback": "knex migrate:rollback --knexfile knexfile.ts",
+    "migrate:reset": "knex migrate:rollback --all --knexfile knexfile.ts",
     "route-back": "knex migrate:rollback --knexfile ./src/knexfile.ts",
     "build": "tsc",
     "start": "node dist/app.js"
   },
   "dependencies": {
+    "bcryptjs": "^3.0.2",
     "cors": "^2.8.5",
     "dotenv": "^16.5.0",
+    "env-cmd": "^10.1.0",
     "express": "^5.1.0",
     "helmet": "^8.1.0",
     "joi": "^17.13.3",

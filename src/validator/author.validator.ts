@@ -7,11 +7,11 @@ const authorValidationType = Joi.object({
     'any.required': 'Name is required',
   }),
   email: Joi.string().email().required().messages({
-    'string.base': 'Name must be a string',
-    'string.empty': 'Name cannot be empty',
-    'any.required': 'Name is required',
+    'string.base': 'email must be a string',
+    'string.empty': 'email cannot be empty',
+    'any.required': 'email is required',
   }),
-  password: Joi.string().email().required().messages({
+  password: Joi.string().required().messages({
     'string.base': 'Name must be a string',
     'string.empty': 'Name cannot be empty',
     'any.required': 'Name is required',
@@ -20,8 +20,8 @@ const authorValidationType = Joi.object({
     'string.base': 'Bio must be a string',
   }),
   birthdate: Joi.date().required().messages({
-    'date.base': 'Birthdate must be a valid date',
-    'any.required': 'Birthdate is required',
+    'date.base': 'Birth date must be a valid date',
+    'any.required': 'Birth date is required',
   }),
 });
 

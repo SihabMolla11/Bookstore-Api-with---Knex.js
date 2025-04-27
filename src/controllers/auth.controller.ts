@@ -13,12 +13,14 @@ export const registrationController = async (req: Request, res: Response): Promi
 
     if (validation?.error) {
       errorResponse(res, validation.error.details[0].message, 500);
+      return;
     }
 
     const isAlreadyExisting = await getAuthorByEmail(payload.email);
 
     if (isAlreadyExisting) {
       errorResponse(res, 'Email Already Existing', 500);
+      return;
     }
 
     const hashedPassword = await bcryptjs.hash(payload?.password, 10);

@@ -2,13 +2,35 @@ import db from '../config/db';
 import { AuthorType, AuthorUpdateType } from '../types/author.types';
 
 export const getAllAuthors = async (authorName: string) => {
-  const query = db('authors').select('id', 'name', 'bio', 'birthdate', 'created_at');
+  const authorQuery = db('authors')
+    .select('id', 'name', 'bio', 'birthdate', 'created_at')
+    .orderBy('created_at', 'desc');
 
   if (authorName) {
-    query.where('name', 'ilike', `%${authorName}%`);
+    authorQuery.where('name', 'ilike', `%${authorName}%`);
   }
 
-  return query;
+  const authors = await authorQuery;
+
+  const authorIds = authors?.map((author: AuthorType) => author.id);
+
+  const books = await db('books')
+    .select('id', 'title', 'published_date', 'author_id', 'created_at')
+    .whereIn('author_id', authorIds)
+    .orderBy('created_at', 'desc');
+
+  const authorResponse = authors?.map((author) => {
+    const filteredBooks = books?.filter((book) => book.author_id === author.id);
+
+    const data = {
+      ...author,
+      book_list: filteredBooks,
+    };
+
+    return data;
+  });
+
+  return authorResponse;
 };
 
 export const getAuthorById = async (id: number) => {

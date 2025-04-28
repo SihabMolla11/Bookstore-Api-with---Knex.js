@@ -4,22 +4,35 @@ import { BookType, BookUpdateType } from '../types/book.types';
 interface getBookListQuery {
   title?: string;
   author?: number;
+  page: number;
+  perPage: number;
 }
 
 export const getAllBooks = async (queries: getBookListQuery) => {
-  const query = db('books')
+  const page = queries.page;
+  const perPage = queries.perPage;
+  const skip = (page - 1) * perPage;
+
+  const query = db('books').where((qb) => {
+    if (queries?.title) {
+      qb.where('title', 'ilike', `%${queries.title}%`);
+    }
+    if (queries?.author) {
+      qb.where('author_id', queries.author);
+    }
+  });
+
+  const totalResult = await query.clone().count<{ count: string }>('id as count').first();
+  const total = Number(totalResult?.count) || 0;
+
+  const books = await query
+    .clone()
     .select('id', 'title', 'published_date', 'author_id', 'created_at')
-    .orderBy('created_at', 'desc');
+    .orderBy('created_at', 'desc')
+    .limit(perPage)
+    .offset(skip);
 
-  if (queries?.title) {
-    query.where('title', 'ilike', `%${queries.title}%`);
-  }
-
-  if (queries?.author) {
-    query.where('author_id', queries.author);
-  }
-
-  return query;
+  return { books, page, perPage, total };
 };
 
 export const getBookById = async (id: number) => {

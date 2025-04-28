@@ -9,8 +9,10 @@ export const getBookListController = async (req: Request, res: Response): Promis
   try {
     const title = req.query.title as string | undefined;
     const author = req.query.author as number | undefined;
+    const page = parseInt(req.query.page as string) || 1;
+    const perPage = parseInt(req.query.perPage as string) || 10;
 
-    const books = await getAllBooks({ title, author });
+    const books = await getAllBooks({ title, author, page, perPage });
 
     if (!books) {
       errorResponse(res, 'Failed to get book list. Please try again later.', 500);

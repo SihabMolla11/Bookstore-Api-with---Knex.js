@@ -1,6 +1,6 @@
 import Joi from 'joi';
 
-const bookValidationType = Joi.object({
+export const createBookDTO = Joi.object({
   title: Joi.string().required().messages({
     'string.base': 'Title must be a string',
     'string.empty': 'Title cannot be empty',
@@ -22,4 +22,20 @@ const bookValidationType = Joi.object({
   }),
 });
 
-export default bookValidationType;
+export const updateBookDTO = Joi.object({
+  title: Joi.string().optional().messages({
+    'string.base': 'Title must be a string',
+  }),
+
+  description: Joi.string().optional().messages({
+    'string.base': 'Description must be a string',
+  }),
+
+  published_date: Joi.date().optional().messages({
+    'date.base': 'Published date must be a valid date',
+  }),
+
+  author_id: Joi.number().integer().optional().messages({
+    'number.base': 'Author ID must be a number',
+  }),
+});

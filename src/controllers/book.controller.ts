@@ -5,13 +5,12 @@ import { BookType, BookUpdateType } from '../types/book.types';
 import errorResponse from '../utils/error-message';
 import { createBookDTO, updateBookDTO } from '../validator/book.validator';
 
-
-
 export const getBookListController = async (req: Request, res: Response): Promise<void> => {
   try {
-    const { title } = req.query;
+    const title = req.query.title as string | undefined;
+    const author = req.query.author as number | undefined;
 
-    const books = await getAllBooks(title as string);
+    const books = await getAllBooks({ title, author });
 
     if (!books) {
       errorResponse(res, 'Failed to get book list. Please try again later.', 500);

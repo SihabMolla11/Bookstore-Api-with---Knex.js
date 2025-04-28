@@ -1,13 +1,22 @@
 import db from '../config/db';
 import { BookType, BookUpdateType } from '../types/book.types';
 
-export const getAllBooks = async (title: string) => {
+interface getBookListQuery {
+  title?: string;
+  author?: number;
+}
+
+export const getAllBooks = async (queries: getBookListQuery) => {
   const query = db('books')
     .select('id', 'title', 'published_date', 'author_id', 'created_at')
     .orderBy('created_at', 'desc');
 
-  if (title) {
-    query.where('title', 'ilike', `%${title}%`);
+  if (queries?.title) {
+    query.where('title', 'ilike', `%${queries.title}%`);
+  }
+
+  if (queries?.author) {
+    query.where('author_id', queries.author);
   }
 
   return query;

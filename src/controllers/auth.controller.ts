@@ -1,14 +1,14 @@
 import bcryptjs from 'bcryptjs';
 import { Request, Response } from 'express';
 import { createAuthor, getAuthorByEmail } from '../models/author.model';
-import { AuthorType, LoginPayloadType } from '../types/author.types';
+import { authorTypeForAuth, LoginPayloadType } from '../types/author.types';
 import errorResponse from '../utils/error-message';
 import { signToken } from '../utils/jwt.util';
 import { loginUserDTO, registrationDTO } from '../validator/author.validator';
 
 export const registrationController = async (req: Request, res: Response): Promise<void> => {
   try {
-    const payload: AuthorType = req.body;
+    const payload: authorTypeForAuth = req.body;
 
     const validation = registrationDTO.validate(payload);
 
@@ -27,7 +27,7 @@ export const registrationController = async (req: Request, res: Response): Promi
     const hashedPassword = await bcryptjs.hash(payload?.password, 10);
     payload.password = hashedPassword;
 
-    const newAuthor: AuthorType = await createAuthor(payload);
+    const newAuthor: authorTypeForAuth = await createAuthor(payload);
 
     const token: string = signToken(newAuthor.id, newAuthor.email, newAuthor.name);
 
@@ -55,7 +55,7 @@ export const loginAuthor = async (req: Request, res: Response): Promise<void> =>
       return;
     }
 
-    const existingAuthor: AuthorType = await getAuthorByEmail(payload.email);
+    const existingAuthor: authorTypeForAuth = await getAuthorByEmail(payload.email);
 
     if (!existingAuthor) {
       errorResponse(res, 'No user is registered with this email address', 400);

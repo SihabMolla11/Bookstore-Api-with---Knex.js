@@ -1,8 +1,6 @@
 import db from '../config/db';
 import { AuthorType, AuthorUpdateType } from '../types/author.types';
 
-
-
 export const getAllAuthors = async () => {
   return db('authors').select('*');
 };
@@ -21,7 +19,8 @@ export const createAuthor = async (author: Omit<AuthorType, 'id'>) => {
 };
 
 export const updateAuthor = async (id: number, author: Partial<AuthorUpdateType>) => {
-  return db('authors').where('id', id).update(author).returning('*');
+  const [updatedAuthor] = await db('authors').where('id', id).update(author).returning('*');
+  return updatedAuthor;
 };
 
 export const deleteAuthor = async (id: number) => {

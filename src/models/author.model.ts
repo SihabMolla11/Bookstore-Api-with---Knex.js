@@ -24,7 +24,7 @@ export const getAllAuthors = async (authorName: string) => {
 
     const data = {
       ...author,
-      book_list: filteredBooks,
+      books: filteredBooks,
     };
 
     return data;
@@ -34,7 +34,14 @@ export const getAllAuthors = async (authorName: string) => {
 };
 
 export const getAuthorById = async (id: number) => {
-  return db('authors').where('id', id).first();
+  const author = await db('authors').where('id', id).first();
+
+  const books = await db('books')
+    .select('id', 'title', 'published_date', 'author_id', 'created_at')
+    .where('author_id', author.id)
+    .orderBy('created_at', 'desc');
+
+  return { ...author, books };
 };
 
 export const getAuthorByEmail = async (email: string) => {

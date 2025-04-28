@@ -9,6 +9,6 @@ mainRouter.get('/', (req: Request, res: Response) => {
 });
 
 mainRouter.use('/auth', authRouter);
-mainRouter.use('/author', authorRoute);
+mainRouter.use('/authors', authorRoute);
 
 export default mainRouter;

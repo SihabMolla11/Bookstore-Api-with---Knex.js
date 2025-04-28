@@ -68,7 +68,7 @@ export const updateAuthorController = async (req: Request, res: Response): Promi
 
 export const getAuthorListController = async (req: Request, res: Response): Promise<void> => {
   try {
-    const { authorName } = req?.query;
+    const { authorName } = req.query;
 
     const authorList = await getAllAuthors(authorName as string);
 
@@ -78,6 +78,23 @@ export const getAuthorListController = async (req: Request, res: Response): Prom
     }
 
     res.status(201).json({ success: true, data: authorList });
+  } catch (error: any) {
+    res.status(500).json({ error: error.message || 'Internal Server Error' });
+  }
+};
+
+export const getAuthorDetailsController = async (req: Request, res: Response): Promise<void> => {
+  try {
+    const id: number = +req.params.id;
+
+    const authorDetails = await getAuthorById(id);
+
+    if (!authorDetails) {
+      errorResponse(res, 'Failed to get author list. Please try again later.', 500);
+      return;
+    }
+
+    res.status(201).json({ success: true, data: authorDetails });
   } catch (error: any) {
     res.status(500).json({ error: error.message || 'Internal Server Error' });
   }

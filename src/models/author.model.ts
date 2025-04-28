@@ -1,16 +1,33 @@
 import db from '../config/db';
 import { AuthorType, AuthorUpdateType } from '../types/author.types';
 
-export const getAllAuthors = async (authorName: string) => {
-  const authorQuery = db('authors')
+interface getAuthorsListQuery {
+  name?: string;
+  author?: number;
+  page: number;
+  perPage: number;
+}
+
+export const getAllAuthors = async (queries: getAuthorsListQuery) => {
+  const page = queries.page;
+  const perPage = queries.perPage;
+  const skip = (page - 1) * perPage;
+
+  const authorQuery = db('authors').where((qb) => {
+    if (queries?.name) {
+      qb.where('name', 'ilike', `%${queries.name}%`);
+    }
+  });
+
+  const totalResult = await authorQuery.clone().count<{ count: string }>('id as count').first();
+  const total = Number(totalResult?.count) || 0;
+
+  const authors = await authorQuery
+    .clone()
     .select('id', 'name', 'bio', 'birthdate', 'created_at')
-    .orderBy('created_at', 'desc');
-
-  if (authorName) {
-    authorQuery.where('name', 'ilike', `%${authorName}%`);
-  }
-
-  const authors = await authorQuery;
+    .orderBy('created_at', 'desc')
+    .limit(perPage)
+    .offset(skip);
 
   const authorIds = authors?.map((author: AuthorType) => author.id);
 
@@ -30,7 +47,7 @@ export const getAllAuthors = async (authorName: string) => {
     return data;
   });
 
-  return authorResponse;
+  return { authors: authorResponse, total, page, perPage };
 };
 
 export const getAuthorById = async (id: number) => {

@@ -10,6 +10,43 @@ import { AuthorType, AuthorUpdateType } from '../types/author.types';
 import errorResponse from '../utils/error-message';
 import { createAuthorDTO, updateAuthorDTO } from '../validator/author.validator';
 
+
+export const getAuthorListController = async (req: Request, res: Response): Promise<void> => {
+  try {
+    const name = req.query.name as string | undefined;
+    const page = parseInt(req.query.page as string) || 1;
+    const perPage = parseInt(req.query.perPage as string) || 10;
+
+    const authorList = await getAllAuthors({ name, page, perPage });
+
+    if (!authorList) {
+      errorResponse(res, 'Failed to get author list. Please try again later.', 500);
+      return;
+    }
+
+    res.status(201).json({ success: true, data: authorList });
+  } catch (error: any) {
+    res.status(500).json({ error: error.message || 'Internal Server Error' });
+  }
+};
+
+export const getAuthorDetailsController = async (req: Request, res: Response): Promise<void> => {
+  try {
+    const id: number = +req.params.id;
+
+    const authorDetails = await getAuthorById(id);
+
+    if (!authorDetails) {
+      errorResponse(res, 'Failed to get author list. Please try again later.', 500);
+      return;
+    }
+
+    res.status(201).json({ success: true, data: authorDetails });
+  } catch (error: any) {
+    res.status(500).json({ error: error.message || 'Internal Server Error' });
+  }
+};
+
 export const createAuthorController = async (req: Request, res: Response): Promise<void> => {
   try {
     const payload: AuthorType = req.body;
@@ -61,40 +98,6 @@ export const updateAuthorController = async (req: Request, res: Response): Promi
     }
 
     res.status(201).json({ success: true, data: updatedData });
-  } catch (error: any) {
-    res.status(500).json({ error: error.message || 'Internal Server Error' });
-  }
-};
-
-export const getAuthorListController = async (req: Request, res: Response): Promise<void> => {
-  try {
-    const { authorName } = req.query;
-
-    const authorList = await getAllAuthors(authorName as string);
-
-    if (!authorList) {
-      errorResponse(res, 'Failed to get author list. Please try again later.', 500);
-      return;
-    }
-
-    res.status(201).json({ success: true, data: authorList });
-  } catch (error: any) {
-    res.status(500).json({ error: error.message || 'Internal Server Error' });
-  }
-};
-
-export const getAuthorDetailsController = async (req: Request, res: Response): Promise<void> => {
-  try {
-    const id: number = +req.params.id;
-
-    const authorDetails = await getAuthorById(id);
-
-    if (!authorDetails) {
-      errorResponse(res, 'Failed to get author list. Please try again later.', 500);
-      return;
-    }
-
-    res.status(201).json({ success: true, data: authorDetails });
   } catch (error: any) {
     res.status(500).json({ error: error.message || 'Internal Server Error' });
   }

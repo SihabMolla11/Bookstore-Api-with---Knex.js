@@ -1,6 +1,6 @@
 import Joi from 'joi';
 
-export const createUserDTO = Joi.object({
+export const registrationDTO = Joi.object({
   name: Joi.string().required().messages({
     'string.base': 'Name must be a string',
     'string.empty': 'Name cannot be empty',

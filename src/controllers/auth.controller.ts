@@ -1,19 +1,16 @@
 import bcryptjs from 'bcryptjs';
 import { Request, Response } from 'express';
-import {
-  createAuthor,
-  getAuthorByEmail,
-} from '../models/author.model';
+import { createAuthor, getAuthorByEmail } from '../models/author.model';
+import { AuthorType, LoginPayloadType } from '../types/author.types';
 import errorResponse from '../utils/error-message';
 import { signToken } from '../utils/jwt.util';
-import { createUserDTO, loginUserDTO } from '../validator/author.validator';
-import { AuthorType, LoginPayloadType } from '../types/author.types';
+import { loginUserDTO, registrationDTO } from '../validator/author.validator';
 
 export const registrationController = async (req: Request, res: Response): Promise<void> => {
   try {
     const payload: AuthorType = req.body;
 
-    const validation = createUserDTO.validate(payload);
+    const validation = registrationDTO.validate(payload);
 
     if (validation?.error) {
       errorResponse(res, validation.error.details[0].message, 500);

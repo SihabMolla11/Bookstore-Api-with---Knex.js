@@ -1,14 +1,13 @@
 import bcryptjs from 'bcryptjs';
 import { Request, Response } from 'express';
 import {
-  AuthorType,
   createAuthor,
   getAuthorByEmail,
-  LoginPayloadType,
 } from '../models/author.model';
 import errorResponse from '../utils/error-message';
 import { signToken } from '../utils/jwt.util';
 import { createUserDTO, loginUserDTO } from '../validator/author.validator';
+import { AuthorType, LoginPayloadType } from '../types/author.types';
 
 export const registrationController = async (req: Request, res: Response): Promise<void> => {
   try {

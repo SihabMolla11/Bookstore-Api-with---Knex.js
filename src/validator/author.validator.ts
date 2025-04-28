@@ -1,6 +1,6 @@
 import Joi from 'joi';
 
-const authorValidationType = Joi.object({
+export const createUserDTO = Joi.object({
   name: Joi.string().required().messages({
     'string.base': 'Name must be a string',
     'string.empty': 'Name cannot be empty',
@@ -25,4 +25,15 @@ const authorValidationType = Joi.object({
   }),
 });
 
-export default authorValidationType;
+export const loginUserDTO = Joi.object({
+  email: Joi.string().email().required().messages({
+    'string.base': 'email must be a string',
+    'string.empty': 'email cannot be empty',
+    'any.required': 'email is required',
+  }),
+  password: Joi.string().required().messages({
+    'string.base': 'Name must be a string',
+    'string.empty': 'Name cannot be empty',
+    'any.required': 'Name is required',
+  }),
+});

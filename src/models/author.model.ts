@@ -17,6 +17,11 @@ export interface AuthorUpdateType {
   birthdate?: string;
 }
 
+export interface LoginPayloadType {
+  email: string;
+  password: string;
+}
+
 export const getAllAuthors = async () => {
   return db('authors').select('*');
 };

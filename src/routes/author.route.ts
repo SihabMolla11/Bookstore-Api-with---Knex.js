@@ -1,9 +1,16 @@
 import { Router } from 'express';
-import { createAuthorController, updateAuthorController } from '../controllers/author.controller';
+import {
+  authorDeleteController,
+  createAuthorController,
+  getAuthorListController,
+  updateAuthorController,
+} from '../controllers/author.controller';
 
 const authorRoute = Router();
 
 authorRoute.post('/create', createAuthorController);
 authorRoute.put('/update/:id', updateAuthorController);
+authorRoute.get('/list', getAuthorListController);
+authorRoute.delete('/delete/:id', authorDeleteController);
 
 export default authorRoute;

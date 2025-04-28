@@ -1,8 +1,14 @@
 import db from '../config/db';
 import { AuthorType, AuthorUpdateType } from '../types/author.types';
 
-export const getAllAuthors = async () => {
-  return db('authors').select('*');
+export const getAllAuthors = async (authorName: string) => {
+  const query = db('authors').select('id', 'name', 'bio', 'birthdate', 'created_at');
+
+  if (authorName) {
+    query.where('name', 'ilike', `%${authorName}%`);
+  }
+
+  return query;
 };
 
 export const getAuthorById = async (id: number) => {
@@ -24,5 +30,6 @@ export const updateAuthor = async (id: number, author: Partial<AuthorUpdateType>
 };
 
 export const deleteAuthor = async (id: number) => {
-  return db('authors').where('id', id).del();
+  const deletedAuthor = await db('authors').where('id', id).del();
+  return deletedAuthor;
 };

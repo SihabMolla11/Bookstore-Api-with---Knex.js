@@ -1,5 +1,11 @@
 import { Request, Response } from 'express';
-import { createAuthor, getAuthorById, updateAuthor } from '../models/author.model';
+import {
+  createAuthor,
+  deleteAuthor,
+  getAllAuthors,
+  getAuthorById,
+  updateAuthor,
+} from '../models/author.model';
 import { AuthorType, AuthorUpdateType } from '../types/author.types';
 import errorResponse from '../utils/error-message';
 import { createAuthorDTO, updateAuthorDTO } from '../validator/author.validator';
@@ -17,7 +23,12 @@ export const createAuthorController = async (req: Request, res: Response): Promi
 
     const newAuthor: AuthorType = await createAuthor(payload);
 
-    res.status(201).json(newAuthor);
+    if (!newAuthor) {
+      errorResponse(res, 'Failed to create author. Please try again later.', 500);
+      return;
+    }
+
+    res.status(201).json({ success: true, data: newAuthor });
   } catch (error: any) {
     res.status(500).json({ error: error.message || 'Internal Server Error' });
   }
@@ -42,9 +53,55 @@ export const updateAuthorController = async (req: Request, res: Response): Promi
       return;
     }
 
-    const newAuthor: AuthorUpdateType = await updateAuthor(id, payload);
+    const updatedData: AuthorUpdateType = await updateAuthor(id, payload);
 
-    res.status(201).json(newAuthor);
+    if (!updatedData) {
+      errorResponse(res, 'Failed to update author. Please try again later.', 500);
+      return;
+    }
+
+    res.status(201).json({ success: true, data: updatedData });
+  } catch (error: any) {
+    res.status(500).json({ error: error.message || 'Internal Server Error' });
+  }
+};
+
+export const getAuthorListController = async (req: Request, res: Response): Promise<void> => {
+  try {
+    const { authorName } = req?.query;
+
+    const authorList = await getAllAuthors(authorName as string);
+
+    if (!authorList) {
+      errorResponse(res, 'Failed to get author list. Please try again later.', 500);
+      return;
+    }
+
+    res.status(201).json({ success: true, data: authorList });
+  } catch (error: any) {
+    res.status(500).json({ error: error.message || 'Internal Server Error' });
+  }
+};
+
+export const authorDeleteController = async (req: Request, res: Response): Promise<void> => {
+  try {
+    const id: number = +req.params.id;
+
+    const isExistingAuthor = await getAuthorById(id);
+
+    if (!isExistingAuthor) {
+      errorResponse(res, 'Author not found', 400);
+      return;
+    }
+
+    const remove = await deleteAuthor(id);
+
+    if (!remove) {
+      errorResponse(res, 'Failed to delete author. Please try again later.', 500);
+      return;
+    }
+
+    res.status(201).json({ success: true, data: isExistingAuthor });
   } catch (error: any) {
     res.status(500).json({ error: error.message || 'Internal Server Error' });
   }

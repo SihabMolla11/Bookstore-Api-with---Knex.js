@@ -71,11 +71,28 @@ export const createAuthor = async (author: Omit<AuthorType, 'id'>) => {
 };
 
 export const updateAuthor = async (id: number, author: Partial<AuthorUpdateType>) => {
-  const [updatedAuthor] = await db('authors').where('id', id).update(author).returning('*');
+  const [updatedAuthor] = await db('authors')
+    .where('id', id)
+    .update(author)
+    .returning(['id', 'name', 'birthdate', 'bio', 'email']);
   return updatedAuthor;
 };
 
 export const deleteAuthor = async (id: number) => {
   const deletedAuthor = await db('authors').where('id', id).del();
   return deletedAuthor;
+};
+
+export const getUserProfile = async (id: number) => {
+  const user = await db('authors')
+    .where('id', id)
+    .first()
+    .select('id', 'name', 'email', 'bio', 'birthdate', 'created_at');
+
+  const books = await db('books')
+    .select('id', 'title', 'published_date', 'author_id', 'created_at')
+    .where('author_id', user.id)
+    .orderBy('created_at', 'desc');
+
+  return { ...user, books };
 };

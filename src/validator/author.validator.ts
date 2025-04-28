@@ -60,6 +60,9 @@ export const updateAuthorDTO = Joi.object({
   bio: Joi.string().optional().messages({
     'string.base': 'Bio must be a string',
   }),
+  email: Joi.string().email().optional().messages({
+    'string.base': 'Bio must be a string',
+  }),
   birthdate: Joi.date().optional().messages({
     'date.base': 'Birth date must be a valid date',
   }),

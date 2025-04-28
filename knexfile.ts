@@ -18,9 +18,6 @@ const config = {
     migrations: {
       directory: path.join(__dirname, 'src/db/migrations'),
     },
-    // seeds: {
-    //   directory: path.join(__dirname, 'src/db/seeds'),
-    // },
   },
   production: {
     client: process.env.DB_CLIENT,
@@ -28,9 +25,6 @@ const config = {
     migrations: {
       directory: path.join(__dirname, 'src/db/migrations'),
     },
-    // seeds: {
-    //   directory: path.join(__dirname, 'src/db/seeds'),
-    // },
   },
 };
 

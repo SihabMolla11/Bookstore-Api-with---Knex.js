@@ -1,14 +1,14 @@
 import { NextFunction, Request, Response } from 'express';
 import { verifyToken } from '../utils/jwt.util';
 
-export interface requestUserType {
+export interface userType {
   id: number;
   email: string;
   name: string;
 }
 
 interface AuthRequest extends Request {
-  user?: requestUserType;
+  user?: userType;
 }
 
 const authGard = (req: AuthRequest, res: Response, next: NextFunction): void => {
@@ -20,8 +20,8 @@ const authGard = (req: AuthRequest, res: Response, next: NextFunction): void => 
     }
 
     const token = header.split(' ')[1];
-    const decodedToken = verifyToken(token) as requestUserType;
-    
+    const decodedToken = verifyToken(token) as userType;
+
     req.user = { id: decodedToken.id, name: decodedToken.name, email: decodedToken.name };
     next();
   } catch (error) {

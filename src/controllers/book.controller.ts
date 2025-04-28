@@ -5,6 +5,42 @@ import { BookType, BookUpdateType } from '../types/book.types';
 import errorResponse from '../utils/error-message';
 import { createBookDTO, updateBookDTO } from '../validator/book.validator';
 
+
+
+export const getBookListController = async (req: Request, res: Response): Promise<void> => {
+  try {
+    const { title } = req.query;
+
+    const books = await getAllBooks(title as string);
+
+    if (!books) {
+      errorResponse(res, 'Failed to get book list. Please try again later.', 500);
+      return;
+    }
+
+    res.status(200).json({ success: true, data: books });
+  } catch (error: any) {
+    res.status(500).json({ error: error.message || 'Internal Server Error' });
+  }
+};
+
+export const getBookDetailsController = async (req: Request, res: Response): Promise<void> => {
+  try {
+    const id: number = +req.params.id;
+
+    const bookDetails = await getBookById(id);
+
+    if (!bookDetails) {
+      errorResponse(res, 'Failed to get book details. Please try again later.', 500);
+      return;
+    }
+
+    res.status(200).json({ success: true, data: bookDetails });
+  } catch (error: any) {
+    res.status(500).json({ error: error.message || 'Internal Server Error' });
+  }
+};
+
 export const createBookController = async (req: Request, res: Response): Promise<void> => {
   try {
     const payload: BookType = req.body;
@@ -72,40 +108,6 @@ export const updateBookController = async (req: Request, res: Response): Promise
     }
 
     res.status(201).json({ success: true, data: updatedBook });
-  } catch (error: any) {
-    res.status(500).json({ error: error.message || 'Internal Server Error' });
-  }
-};
-
-export const getBookListController = async (req: Request, res: Response): Promise<void> => {
-  try {
-    const { title } = req.query;
-
-    const books = await getAllBooks(title as string);
-
-    if (!books) {
-      errorResponse(res, 'Failed to get book list. Please try again later.', 500);
-      return;
-    }
-
-    res.status(200).json({ success: true, data: books });
-  } catch (error: any) {
-    res.status(500).json({ error: error.message || 'Internal Server Error' });
-  }
-};
-
-export const getBookDetailsController = async (req: Request, res: Response): Promise<void> => {
-  try {
-    const id: number = +req.params.id;
-
-    const bookDetails = await getBookById(id);
-
-    if (!bookDetails) {
-      errorResponse(res, 'Failed to get book details. Please try again later.', 500);
-      return;
-    }
-
-    res.status(200).json({ success: true, data: bookDetails });
   } catch (error: any) {
     res.status(500).json({ error: error.message || 'Internal Server Error' });
   }

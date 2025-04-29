@@ -35,7 +35,7 @@ export const getAllBooks = async (queries: getBookListQuery) => {
   return { books, page, perPage, total };
 };
 
-export const getBookById = async (id: number) => {
+export const getBookDetailsById = async (id: number) => {
   const book = await db('books')
     .select(
       'books.id',
@@ -52,22 +52,29 @@ export const getBookById = async (id: number) => {
     .where('books.id', id)
     .first();
 
-  if (book) {
-    return {
-      id: book.id,
-      title: book.title,
-      description: book.description,
-      published_date: book.published_date,
-      created_at: book.created_at,
-      information: {
-        id: book.author_id,
-        name: book.author_name,
-        bio: book.author_bio,
-        birthdate: book.author_birthdate,
-      },
-    };
+  if (!book) {
+    return null;
   }
-  return null;
+
+  return {
+    id: book.id,
+    title: book.title,
+    description: book.description,
+    published_date: book.published_date,
+    created_at: book.created_at,
+    author_information: {
+      id: book.author_id,
+      name: book.author_name,
+      bio: book.author_bio,
+      birthdate: book.author_birthdate,
+    },
+  };
+};
+
+export const getBookById = async (id: number) => {
+  const book = await db('books').where('books.id', id).first().select('id', 'title');
+
+  return book;
 };
 
 export const createBook = async (book: Omit<BookType, 'id' | 'created_at' | 'updated_at'>) => {

@@ -1,6 +1,13 @@
 import { Request, Response } from 'express';
 import { getAuthorById } from '../models/author.model';
-import { createBook, deleteBook, getAllBooks, getBookById, updateBook } from '../models/book.model';
+import {
+  createBook,
+  deleteBook,
+  getAllBooks,
+  getBookById,
+  getBookDetailsById,
+  updateBook,
+} from '../models/book.model';
 import { BookType, BookUpdateType } from '../types/book.types';
 import errorResponse from '../utils/error-message';
 import { createBookDTO, updateBookDTO } from '../validator/book.validator';
@@ -29,10 +36,10 @@ export const getBookDetailsController = async (req: Request, res: Response): Pro
   try {
     const id: number = +req.params.id;
 
-    const bookDetails = await getBookById(id);
+    const bookDetails = await getBookDetailsById(id);
 
     if (!bookDetails) {
-      errorResponse(res, 'Failed to get book details. Please try again later.', 500);
+      errorResponse(res, 'Book not found', 400);
       return;
     }
 
@@ -85,6 +92,13 @@ export const updateBookController = async (req: Request, res: Response): Promise
       return;
     }
 
+    const isExistingBook = await getBookById(id);
+
+    if (!isExistingBook) {
+      errorResponse(res, 'Book not found', 400);
+      return;
+    }
+
     if (payload.author_id) {
       const isExistingAuthor = await getAuthorById(payload.author_id);
 
@@ -94,12 +108,7 @@ export const updateBookController = async (req: Request, res: Response): Promise
       }
     }
 
-    const isExistingBook = await getBookById(id);
 
-    if (!isExistingBook) {
-      errorResponse(res, 'Book not found', 400);
-      return;
-    }
 
     const updatedBook = await updateBook(id, payload);
 

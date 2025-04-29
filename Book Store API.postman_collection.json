@@ -16,7 +16,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n  \"name\": \"Sihab Molla\",\r\n  \"email\": \"sihab@gmail.com\",\r\n  \"password\": \"12345678\",\r\n  \"bio\": \"Sihab Uddin Molla Is a backend developer\",\r\n  \"birthdate\": \"1990-05-20\"\r\n}",
+							"raw": "{\r\n  \"name\": \"User 1\",\r\n  \"email\": \"user@gmail.com\",\r\n  \"password\": \"123456\",\r\n  \"bio\": \"this is a test user\",\r\n  \"birthdate\": \"1990-05-20\"\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -45,7 +45,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n   \"email\": \"sihab@gmail.com\",\r\n  \"password\": \"12345678\"\r\n}",
+							"raw": "{\r\n   \"email\": \"user@gmail.com\",\r\n  \"password\": \"123456\"\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -111,7 +111,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n  \"name\": \"Sihab Uddin Molla\",\r\n  \"email\": \"sihab@gmail.com\", \r\n  \"bio\": \"Sihab Uddin Molla Is backend developer\",\r\n  \"birthdate\": \"1990-05-20\"\r\n}",
+							"raw": "{\r\n  \"name\": \"First User\",\r\n  \"email\": \"user@gmail.com\", \r\n  \"bio\": \"This is First Test User\",\r\n  \"birthdate\": \"1990-05-20\"\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -174,7 +174,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n  \"name\": \"Sihab Molla\",\r\n  \"bio\": \"Sihab Uddin Molla Is a backend developer\",\r\n  \"birthdate\": \"1990-05-20\"\r\n}",
+							"raw": "{\r\n  \"name\": \"Sahadat Islam Alomgir\",\r\n  \"bio\": \"Conduct Research: For nonfiction or research-intensive projects, set goals related to the amount of research you need to complete.\",\r\n  \"birthdate\": \"204-01-20\"\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -196,13 +196,61 @@
 					"response": []
 				},
 				{
-					"name": "Update",
+					"name": "list",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
 					"request": {
-						"method": "PUT",
+						"method": "GET",
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n  \"name\": \"Sihab Uddin Molla\"\r\n}",
+							"raw": "{\r\n  \"name\": \"Sihab Molla\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}/api/v1/authors?name=islam&page=1&perPage=10",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"authors"
+							],
+							"query": [
+								{
+									"key": "name",
+									"value": "islam"
+								},
+								{
+									"key": "page",
+									"value": "1"
+								},
+								{
+									"key": "perPage",
+									"value": "10"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "details",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"name\": \"Sihab Molla\"\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -219,6 +267,35 @@
 								"v1",
 								"authors",
 								"4"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Update",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"name\": \"Sahadat Islam Alomgir\",\r\n  \"bio\": \"Conduct Research: For nonfiction or research-intensive projects, set goals related to the amount of research you need to complete.\",\r\n  \"birthdate\": \"204-01-20\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}/api/v1/authors/3",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"authors",
+								"3"
 							]
 						}
 					},
@@ -252,83 +329,6 @@
 						}
 					},
 					"response": []
-				},
-				{
-					"name": "details",
-					"protocolProfileBehavior": {
-						"disableBodyPruning": true
-					},
-					"request": {
-						"method": "GET",
-						"header": [],
-						"body": {
-							"mode": "raw",
-							"raw": "{\r\n  \"name\": \"Sihab Molla\"\r\n}",
-							"options": {
-								"raw": {
-									"language": "json"
-								}
-							}
-						},
-						"url": {
-							"raw": "{{base_url}}/api/v1/authors/1",
-							"host": [
-								"{{base_url}}"
-							],
-							"path": [
-								"api",
-								"v1",
-								"authors",
-								"1"
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "list",
-					"protocolProfileBehavior": {
-						"disableBodyPruning": true
-					},
-					"request": {
-						"method": "GET",
-						"header": [],
-						"body": {
-							"mode": "raw",
-							"raw": "{\r\n  \"name\": \"Sihab Molla\"\r\n}",
-							"options": {
-								"raw": {
-									"language": "json"
-								}
-							}
-						},
-						"url": {
-							"raw": "{{base_url}}/api/v1/authors?name=sihab&page=1&perPage=10",
-							"host": [
-								"{{base_url}}"
-							],
-							"path": [
-								"api",
-								"v1",
-								"authors"
-							],
-							"query": [
-								{
-									"key": "name",
-									"value": "sihab"
-								},
-								{
-									"key": "page",
-									"value": "1"
-								},
-								{
-									"key": "perPage",
-									"value": "10"
-								}
-							]
-						}
-					},
-					"response": []
 				}
 			]
 		},
@@ -342,7 +342,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n  \"title\": \"Mystery of the Lost City\",\r\n  \"description\": \"An adventurous tale about a group of explorers searching for a hidden ancient city in the jungles of South America. Along the way, they encounter dangerous wildlife, cryptic clues, and dark secrets.\",\r\n  \"published_date\": \"1998-06-14\",\r\n  \"author_id\": 1\r\n}",
+							"raw": "{\r\n  \"title\": \"Man’s Search for Meaningsss\",\r\n  \"description\": \"An adventurous tale about a group of explorers searching for a hidden ancient city in the jungles of South America. Along the way, they encounter dangerous wildlife, cryptic clues, and dark secrets.\",\r\n  \"published_date\": \"2025-05-7\",\r\n  \"author_id\": 2\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -381,7 +381,7 @@
 							}
 						},
 						"url": {
-							"raw": "{{base_url}}/api/v1/books?title=Mystery&author=5&page=1&perPage=10",
+							"raw": "{{base_url}}/api/v1/books?title=Business&author=1&page=1&perPage=10",
 							"host": [
 								"{{base_url}}"
 							],
@@ -393,11 +393,11 @@
 							"query": [
 								{
 									"key": "title",
-									"value": "Mystery"
+									"value": "Business"
 								},
 								{
 									"key": "author",
-									"value": "5"
+									"value": "1"
 								},
 								{
 									"key": "page",
@@ -430,7 +430,7 @@
 							}
 						},
 						"url": {
-							"raw": "{{base_url}}/api/v1/books/5",
+							"raw": "{{base_url}}/api/v1/books/12",
 							"host": [
 								"{{base_url}}"
 							],
@@ -438,7 +438,7 @@
 								"api",
 								"v1",
 								"books",
-								"5"
+								"12"
 							]
 						}
 					},
@@ -451,7 +451,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n  \"title\": \"bangla book\",\r\n  \"description\": \"An adventurous tale about a group of explorers searching for a hidden ancient city in the jungles of South America. Along the way, they encounter dangerous wildlife, cryptic clues, and dark secrets.\",\r\n  \"published_date\": \"1998-06-14\",\r\n  \"author_id\": 5\r\n}",
+							"raw": "{\r\n  \"title\": \"Man’s Search for Meaning\", \r\n  \"author_id\": 3\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -459,7 +459,7 @@
 							}
 						},
 						"url": {
-							"raw": "{{base_url}}/api/v1/books/2",
+							"raw": "{{base_url}}/api/v1/books/12",
 							"host": [
 								"{{base_url}}"
 							],
@@ -467,7 +467,7 @@
 								"api",
 								"v1",
 								"books",
-								"2"
+								"12"
 							]
 						}
 					},
@@ -488,7 +488,7 @@
 							}
 						},
 						"url": {
-							"raw": "{{base_url}}/api/v1/books/4",
+							"raw": "{{base_url}}/api/v1/books/13",
 							"host": [
 								"{{base_url}}"
 							],
@@ -496,7 +496,7 @@
 								"api",
 								"v1",
 								"books",
-								"4"
+								"13"
 							]
 						}
 					},
@@ -510,7 +510,7 @@
 		"bearer": [
 			{
 				"key": "token",
-				"value": "",
+				"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6NSwiZW1haWwiOiJ1c2VyQGdtYWlsLmNvbSIsIm5hbWUiOiJVc2VyIDEiLCJpYXQiOjE3NDU5NDU0MTUsImV4cCI6MTc0ODUzNzQxNX0.2aCc5fFPVxhKX3HZfxbphoGEYnUSZuUhrPtLXlhZL5I",
 				"type": "string"
 			}
 		]

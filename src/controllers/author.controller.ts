@@ -4,6 +4,7 @@ import {
   deleteAuthor,
   getAllAuthors,
   getAuthorById,
+  getAuthorDetails,
   updateAuthor,
 } from '../models/author.model';
 import { AuthorType, AuthorUpdateType } from '../types/author.types';
@@ -34,10 +35,11 @@ export const getAuthorDetailsController = async (req: Request, res: Response): P
   try {
     const id: number = +req.params.id;
 
-    const authorDetails = await getAuthorById(id);
+
+    const authorDetails = await getAuthorDetails(id);
 
     if (!authorDetails) {
-      errorResponse(res, 'Failed to get author list. Please try again later.', 500);
+      errorResponse(res, 'Author Not found', 500);
       return;
     }
 

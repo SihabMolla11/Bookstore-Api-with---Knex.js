@@ -50,8 +50,15 @@ export const getAllAuthors = async (queries: getAuthorsListQuery) => {
   return { authors: authorResponse, total, page, perPage };
 };
 
-export const getAuthorById = async (id: number) => {
-  const author = await db('authors').where('id', id).first();
+export const getAuthorDetails = async (id: number) => {
+  const author = await db('authors')
+    .where('id', id)
+    .first()
+    .select('id', 'name', 'email', 'bio', 'birthdate', 'created_at');
+
+  if (!author) {
+    return null;
+  }
 
   const books = await db('books')
     .select('id', 'title', 'published_date', 'author_id', 'created_at')
@@ -59,6 +66,12 @@ export const getAuthorById = async (id: number) => {
     .orderBy('created_at', 'desc');
 
   return { ...author, books };
+};
+
+export const getAuthorById = async (id: number) => {
+  const author = await db('authors').where('id', id).first().select('id', 'name');
+
+  return author;
 };
 
 export const getAuthorByEmail = async (email: string) => {

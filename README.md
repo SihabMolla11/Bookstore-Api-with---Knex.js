@@ -10,6 +10,18 @@ API Routes: `/api/v1`
 
 Example endpoint: `https://bookstore-api-with-knex-js.onrender.com/api/v1/books`
 
+
+## Technologies Used
+
+- Node.js - JavaScript runtime
+- Express.js - Backend framework
+- TypeScript - Type-safe JavaScript
+- Joi - Input validation
+- JWT (jsonwebtoken) - Authentication
+- Knex.js - SQL query builder
+- pg - PostgreSQL database client
+
+
 ## Features
 
 - Complete CRUD operations for authors and books

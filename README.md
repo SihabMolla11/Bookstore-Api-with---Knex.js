@@ -61,6 +61,8 @@ cp .env.example .env
 Configure the following variables in your `.env` file:
 
 ```
+IS_SSL_ENABLED=true ## make it true when your host is ssl or you are not user local database
+
 DB_HOST=
 DB_PORT=
 DB_USERNAME=

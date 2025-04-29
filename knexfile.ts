@@ -8,26 +8,28 @@ const port = process.env.DB_PORT;
 const user = process.env.DB_USERNAME;
 const password = process.env.DB_PASSWORD;
 const database = process.env.DB_NAME;
-const DB_CLIENT = process.env.DB_CLIENT;
+const db_client = process.env.DB_CLIENT;
+
+const is_ssl_host = process.env.IS_SSL_HOST === 'true';
 
 const DATABASE_URL = `postgresql://${user}:${password}@${host}:${port}/${database}?schema=public`;
 
 const config = {
   development: {
-    client: DB_CLIENT,
+    client: db_client,
     connection: {
       connectionString: DATABASE_URL,
-      ssl: { rejectUnauthorized: false },
+      ssl: is_ssl_host ? { rejectUnauthorized: true } : false,
     },
     migrations: {
       directory: path.join(__dirname, 'src/db/migrations'),
     },
   },
   production: {
-    client: DB_CLIENT,
+    client: db_client,
     connection: {
       connectionString: DATABASE_URL,
-      ssl: { rejectUnauthorized: false },
+      ssl: is_ssl_host ? { rejectUnauthorized: true } : false,
     },
     migrations: {
       directory: path.join(__dirname, 'src/db/migrations'),
@@ -35,6 +37,6 @@ const config = {
   },
 };
 
-console.log('db', DATABASE_URL);
+console.log('db ====>', 'successfully connected' );
 
 export default config;

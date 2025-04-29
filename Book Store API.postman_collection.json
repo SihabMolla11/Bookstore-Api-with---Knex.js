@@ -513,7 +513,13 @@
 		},
 		{
 			"key": "base_url",
-			"value": "https://bookstore-api-with-knex-js.onrender.com"
+			"value": "http://localhost:8000",
+			"disabled": true
+		},
+		{
+			"key": "base_url",
+			"value": "https://bookstore-api-with-knex-js.onrender.com",
+			"type": "string"
 		}
 	]
 }
